@@ -9,7 +9,6 @@ import os
 import traceback
 import yt_dlp
 import json
-import textwrap
 
 
 def read_config():
@@ -25,19 +24,7 @@ def read_config():
         with open('config.json', 'w') as f:
             json.dump(data, f, indent=4)
         with open('README.md', 'w') as f:
-            f.write(textwrap.dedent("""
-            First start creates `config.json`
-            Add playlists links like so: 
-            ```json
-            "playlists": [
-                "https://www.youtube.com/playlist?list=PLL_example",
-                "https://www.youtube.com/playlist?list=PLL_example2"
-            ]
-            ```
-            Then run this script again
-            Don't remove `playlists.cache` file, it contains sync cache
-            And allows to skip already downloaded files 
-            """).strip())
+            f.write("[Описание](https://github.com/MBQbUtils/YoutubeMusicPlaylistDownloader)")
     return data
 
 
