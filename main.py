@@ -16,6 +16,7 @@ import json
 def read_config():
     data = {
         'path': './out/',
+        'format': 'original',
         'playlists': []
     }
 
@@ -37,6 +38,7 @@ def output(text):
 def _main():
     config = read_config()
     playlists_path = os.path.abspath(config['path'])
+    audio_format = config['format']
     playlists = config['playlists']
     download_options = dict(
         format='bestaudio',
@@ -48,11 +50,13 @@ def _main():
         },
         postprocessors=[dict(
             key='FFmpegExtractAudio',
-            preferredcodec='mp3',
+            preferredcodec=audio_format,
         )],
         download_archive='playlists.cache',
         outtmpl='%(playlist_title)s/%(title)s-%(id)s.%(ext)s'
     )
+    if audio_format == 'original':
+        del download_options['postprocessors']
 
     os.makedirs(playlists_path, exist_ok=True)
     os.chdir(playlists_path)
