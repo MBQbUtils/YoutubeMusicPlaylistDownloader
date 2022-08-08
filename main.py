@@ -6,6 +6,8 @@
 """
 
 import os
+import sys
+import time
 import traceback
 import yt_dlp
 import json
@@ -38,8 +40,12 @@ def _main():
     playlists = config['playlists']
     download_options = dict(
         format='bestaudio',
-        ignoreerrors=True,
+        windowsfilenames=(sys.platform == 'win32'),
         no_warnings=True,
+        lazy_playlist=True,
+        compat_opts={
+            'no-youtube-unavailable-videos'
+        },
         postprocessors=[dict(
             key='FFmpegExtractAudio',
             preferredcodec='mp3',
@@ -54,8 +60,20 @@ def _main():
 
     for i, link in enumerate(playlists, 1):
         output(f'Start sync #{i}. {link!r}')
+        retry_count = 0
+        success = False
         with yt_dlp.YoutubeDL(download_options) as downloader:
-            downloader.download([link])
+            while not success:
+                if retry_count:
+                    output(f'Retry sync #{i}, attempt {retry_count}')
+                    time.sleep(0.25*retry_count//2)
+                try:
+                    downloader.download([link])
+                    success = True
+                except Exception as e:
+                    success = False
+                    print(e)
+                retry_count += 1
         output(f'Synced #{i}!')
     output('Done syncing playlists')
 
