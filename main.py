@@ -46,7 +46,6 @@ def _main():
         format='bestaudio',
         windowsfilenames=(sys.platform == 'win32'),
         no_warnings=True,
-        lazy_playlist=True,
         compat_opts={
             'no-youtube-unavailable-videos'
         },
