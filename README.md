@@ -9,9 +9,13 @@
     // Путь до каталога с плейлистами
     "path": "./output/path/", 
     "format": "original", // Формат звука
-    // Используйте формат "original", чтобы не менять формат звука
-    // и не зависеть от наличия ffmpeg
-    // Или формат mp3, например
+    /* Используйте формат "original", чтобы не менять формат звука
+       и не зависеть от наличия ffmpeg
+       Форматы:
+        'aac', 'alac', 'flac',
+        'm4a', 'mp3', 'opus',
+        'vorbis', 'wav'
+    */  
     "playlists": [ // Ссылки на плейлисты с музыкальными клипами
         "https://www.youtube.com/playlist?list=PLL_example",
         "https://www.youtube.com/playlist?list=PLL_example2"
