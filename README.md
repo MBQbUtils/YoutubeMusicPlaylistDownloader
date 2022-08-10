@@ -1,4 +1,4 @@
-# Youtube Music Playlist Downloader
+# [Youtube Music Playlist Downloader](https://github.com/MBQbUtils/YoutubeMusicPlaylistDownloader)
 Скрипт скачивает плейлисты с YouTube и вырезает аудиодорожки. Если какие-то видео уже скачаны, они пропускаются.
 
 ## Как использовать
