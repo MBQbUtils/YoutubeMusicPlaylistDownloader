@@ -5,34 +5,49 @@
 Если какие-то видео уже скачаны, они пропускаются.
 """
 
+import json
 import os
+import re
 import sys
+import textwrap
 import time
 import traceback
 import yt_dlp
-import json
-import re
-from urllib import request
 
 
 def read_config():
-    data = {
-        'path': './out/',
-        'format': 'original',
-        'playlists': []
-    }
-
+    config_content = """
+    {
+        /* Путь до каталога с плейлистами */
+        "path": "./output/path/", 
+        "format": "original", /* Формат звука */
+        /* Используйте формат "original", чтобы не менять формат звука
+           и не зависеть от наличия ffmpeg
+           Форматы:
+            "aac", "alac", "flac",
+            "m4a", "mp3", "opus",
+            "vorbis", "wav"
+        */  
+        "playlists": [ /* Ссылки на плейлисты с музыкальными клипами */
+            "https://www.youtube.com/playlist?list=PLL_example", /* Пример первый */
+            "https://www.youtube.com/playlist?list=PLL_example2" /* Пример последний */
+        ]
+    }"""
+    config_content = textwrap.dedent(config_content).strip()
+    config_path = os.path.abspath('config.json')
     try:
-        with open('config.json', encoding='utf-8') as f:
-            json_string = re.sub(pattern=r'\/\*[\s\S]*?\*\/', repl='', string=f.read())
-            data = json.loads(json_string)
-    except FileNotFoundError:
-        with open('config.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
-        readme_source = 'https://raw.githubusercontent.com/MBQbUtils/YoutubeMusicPlaylistDownloader/main/README.md'
-        readme_path = 'README.md'
-        request.urlretrieve(readme_source, readme_path)
-    return data
+        if not os.path.exists(config_path):
+            with open(config_path, 'w', encoding='utf-8') as f:
+                f.write(config_content)
+            print(f"Edit config at {config_path!r}")
+            input("And then press Enter...")
+        with open(config_path, encoding='utf-8') as f:
+            config_content = f.read()
+        config_content = re.sub(pattern=r'\/\*[\s\S]*?\*\/', repl='', string=config_content)
+        return json.loads(config_content)
+    except:
+        print("Error on read config:")
+        raise
 
 
 def output(text):
