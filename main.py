@@ -11,6 +11,7 @@ import time
 import traceback
 import yt_dlp
 import json
+import re
 from urllib import request
 
 
@@ -22,9 +23,10 @@ def read_config():
     }
 
     try:
-        with open('config.json') as f:
-            data = json.load(f)
-    except:
+        with open('config.json', encoding='utf-8') as f:
+            json_string = re.sub(pattern=r'\/\*[\s\S]*?\*\/', repl='', string=f.read())
+            data = json.loads(json_string)
+    except FileNotFoundError:
         with open('config.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
         readme_source = 'https://raw.githubusercontent.com/MBQbUtils/YoutubeMusicPlaylistDownloader/main/README.md'
