@@ -27,11 +27,15 @@ def read_config():
             "aac", "alac", "flac",
             "m4a", "mp3", "opus",
             "vorbis", "wav"
-        */  
-        "playlists": [ /* Ссылки на плейлисты с музыкальными клипами */
-            "https://www.youtube.com/playlist?list=PLL_example", /* Пример первый */
-            "https://www.youtube.com/playlist?list=PLL_example2" /* Пример последний */
-        ]
+        */
+        "playlists": {
+            /*
+             * Ссылки на плейлисты с музыкальными клипами
+             * в формате "Имя": "Ссылка"
+             */
+            "Example1": "https://www.youtube.com/playlist?list=PLL_example", /* Пример первый */
+            "Example2": "https://www.youtube.com/playlist?list=PLL_example2" /* Пример последний */
+        }
     }"""
     config_content = textwrap.dedent(config_content).strip()
     config_path = os.path.abspath('config.json')
@@ -70,7 +74,6 @@ def _main():
             key='FFmpegExtractAudio',
             preferredcodec=audio_format,
         )],
-        download_archive='playlists.cache',
         outtmpl='%(playlist_title)s/%(title)s-%(id)s.%(ext)s'
     )
     if audio_format == 'original':
@@ -80,7 +83,9 @@ def _main():
     os.chdir(playlists_path)
     output('Syncing all playlists')
 
-    for i, link in enumerate(playlists, 1):
+    for i, name in enumerate(playlists.keys(), 1):
+        link = playlists[name]
+        download_options['download_archive'] = f'{name}.cache'
         output(f'Start sync #{i}. {link!r}')
         retry_count = 0
         success = False

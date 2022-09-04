@@ -16,11 +16,15 @@
         "aac", "alac", "flac",
         "m4a", "mp3", "opus",
         "vorbis", "wav"
-    */  
-    "playlists": [ /* Ссылки на плейлисты с музыкальными клипами */
-        "https://www.youtube.com/playlist?list=PLL_example", /* Пример первый */
-        "https://www.youtube.com/playlist?list=PLL_example2" /* Пример последний */
-    ]
+    */
+    "playlists": {
+        /*
+         * Ссылки на плейлисты с музыкальными клипами
+         * в формате "Имя": "Ссылка"
+         */
+        "Example1": "https://www.youtube.com/playlist?list=PLL_example", /* Пример первый */
+        "Example2": "https://www.youtube.com/playlist?list=PLL_example2" /* Пример последний */
+    }
 }
 ```
 Добавьте ссылки на плейлисты в `config.json`
